@@ -11,6 +11,8 @@ class Cicle {
     draw( context ) {
         context.beginPath();
         context.arc( this.xpos, this.ypos, this.radius, 0, Math.PI*2, false );
+        context.stroke();
+        context.closePath();
     }
 }
 
