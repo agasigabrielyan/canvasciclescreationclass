@@ -1,30 +1,41 @@
-let region = {
-    sizes: {
-        'top' : '150',
-        'left' : '250',
-        'radius' : '34'
+let regions = {
+    'rфыавфыавфыegion1': {
+            sizes: {
+                'top' : 150,
+                'left' : 480,
+                'radius' : 15
+            },
+            data : {
+                 'Classical music' : 10,
+                 'Alternative music' : 14,
+                 'Pop' : 2,
+            }
     },
-    data : {
-         'Classical music' : 10,
-         'Alternative music' : 14,
-         'Pop' : 2,
-         'Jazz' : 12
-    }
-}
-
-let region2 = {
-    sizes: {
-        'top' : '315',
-        'left' : '480',
-        'radius' : '25'
+    'regфафывафion2': {
+            sizes: {
+                'top' : 300,
+                'left' : 333,
+                'radius' : 30
+            },
+            data : {
+                 'Classical music' : 10,
+                 'Alternative music' : 14,
+                 'Pop' : 2,
+            }
     },
-    data : {
-         'Classical music' : 18,
-         'Alternative music' : 144,
-         'Pop' : 50,
-         'Jazz' : 63
+    '343': {
+            sizes: {
+                'top' : 480,
+                'left' : 650,
+                'radius' : 53
+            },
+            data : {
+                 'Classical music' : 18,
+                 'Alternative music' : 144,
+                 'Pop' : 8,
+            }
     }
-}
+};
 
 let myCanvas = document.getElementById('myCanvas');
 
@@ -70,16 +81,16 @@ let PieChart = function( options ) {
         let total_value = 0;
         let color_index = 0;
 
-        for( let category in this.options.data.data ) {
-            let val = this.options.data.data[category];
+        for( let category in this.options.data ) {
+            let val = this.options.data[category];
             total_value += val;
         }
 
         let startAngle = 0;
         let nextAngle = 0;
         let sliceAngle = 0;
-        for( let category in this.options.data.data ) {
-            let val = this.options.data.data[category];
+        for( let category in this.options.data ) {
+            let val = this.options.data[category];
             sliceAngle = 2 * Math.PI * val / total_value;
             if( nextAngle > 0 ) {
                 startAngle = nextAngle;
@@ -89,9 +100,9 @@ let PieChart = function( options ) {
             debugger; 
             drawPieslice (
                 this.ctx,
-                this.options.data.sizes.left,
-                this.options.data.sizes.top,
-                this.options.data.sizes.radius,
+                this.options.sizes.left,
+                this.options.sizes.top,
+                this.options.sizes.radius,
                 startAngle,
                 nextAngle,
                 this.colors[color_index]
@@ -101,20 +112,15 @@ let PieChart = function( options ) {
     }
 }
 
-// создадим экземпляр класса и вызовем метод draw этого класса
-let myPiechart = new PieChart({
+debugger;
+for(let region in regions) {
+    let myPiechart = new PieChart({
         canvas: myCanvas,
-        data: region,
-        colors:['red','blue','green','orange']
-});
-let myPierchat2 = new PieChart({
-    canvas: myCanvas,
-    data: region2,
-    colors:['yellow','orange','purple','green']
-});
-
-myPiechart.draw();
-myPierchat2.draw();
-
+        sizes: regions[region].sizes,
+        data: regions[region].data,
+        colors:['yellow','orange','purple','green']
+    });
+    myPiechart.draw();
+}
 
 
