@@ -1,20 +1,40 @@
-let myData = {
- 'Classical music' : 10,
- 'Alternative music' : 14,
- 'Pop' : 2,
- 'Jazz' : 12
+let region = {
+    sizes: {
+        'top' : '150',
+        'left' : '250',
+        'radius' : '34'
+    },
+    data : {
+         'Classical music' : 10,
+         'Alternative music' : 14,
+         'Pop' : 2,
+         'Jazz' : 12
+    }
+}
+
+let region2 = {
+    sizes: {
+        'top' : '315',
+        'left' : '480',
+        'radius' : '25'
+    },
+    data : {
+         'Classical music' : 18,
+         'Alternative music' : 144,
+         'Pop' : 50,
+         'Jazz' : 63
+    }
 }
 
 let myCanvas = document.getElementById('myCanvas');
 
-myCanvas.width = 300;
-myCanvas.height = 300;
+myCanvas.width = window.innerWidth;
+myCanvas.height = window.innerHeight;
 
 let ctx = myCanvas.getContext('2d');
 
 // рисует линию
 function drawLine( ctx, startX, startY, endX, endY ) {
-    debugger;
     ctx.beginPath();
     ctx.move( startX, startY );
     ctx.line( endX, endY );
@@ -23,7 +43,6 @@ function drawLine( ctx, startX, startY, endX, endY ) {
 
 // рисует дугу
 function drawArc( ctx, centerX, centerY, radius, startAngle, endAngle ) {
-    debugger;
     ctx.beginPath();
     ctx.arc( centerX, centerY, radius, startAngle, startAngle );
     ctx.stroke();
@@ -31,7 +50,6 @@ function drawArc( ctx, centerX, centerY, radius, startAngle, endAngle ) {
 
 // рисует кусок диаграммы
 function drawPieslice( ctx, centerX, centerY, radius, startAngle, endAngle, color ) {
-    debugger;
      ctx.fillStyle = color;
      ctx.beginPath();
      ctx.moveTo( centerX, centerY );
@@ -49,20 +67,19 @@ let PieChart = function( options ) {
     this.colors = options.colors;
 
     this.draw = function() {
-        var total_value = 0;
-        var color_index = 0;
+        let total_value = 0;
+        let color_index = 0;
 
-        for( let category in this.options.data ) {
-            let val = this.options.data[category];
+        for( let category in this.options.data.data ) {
+            let val = this.options.data.data[category];
             total_value += val;
         }
 
         let startAngle = 0;
         let nextAngle = 0;
         let sliceAngle = 0;
-        for( let category in this.options.data ) {
-            let val = this.options.data[category];
-            debugger;
+        for( let category in this.options.data.data ) {
+            let val = this.options.data.data[category];
             sliceAngle = 2 * Math.PI * val / total_value;
             if( nextAngle > 0 ) {
                 startAngle = nextAngle;
@@ -72,9 +89,9 @@ let PieChart = function( options ) {
             debugger; 
             drawPieslice (
                 this.ctx,
-                this.canvas.width / 2,
-                this.canvas.height / 2,
-                Math.min(this.canvas.width/2, this.canvas.height/2),
+                this.options.data.sizes.left,
+                this.options.data.sizes.top,
+                this.options.data.sizes.radius,
                 startAngle,
                 nextAngle,
                 this.colors[color_index]
@@ -84,17 +101,20 @@ let PieChart = function( options ) {
     }
 }
 
-// чтобы использовать класс, мы должны создать экземпляр, а затем вызвать метод draw() у созданного объекта
-
-var myPiechart = new PieChart(
-    {
+// создадим экземпляр класса и вызовем метод draw этого класса
+let myPiechart = new PieChart({
         canvas: myCanvas,
-        data: myData,
+        data: region,
         colors:['red','blue','green','orange']
-    }
-);
+});
+let myPierchat2 = new PieChart({
+    canvas: myCanvas,
+    data: region2,
+    colors:['yellow','orange','purple','green']
+});
 
 myPiechart.draw();
+myPierchat2.draw();
 
 
 
