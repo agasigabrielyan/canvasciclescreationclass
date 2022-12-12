@@ -58,9 +58,17 @@ let PieChart = function( options ) {
         }
 
         let startAngle = 0;
+        let nextAngle = 0;
+        let sliceAngle = 0;
         for( let category in this.options.data ) {
             let val = this.options.data[category];
-            let sliceAngle = 2 * Math.PI * val / total_value;
+            debugger;
+            sliceAngle = 2 * Math.PI * val / total_value;
+            if( nextAngle > 0 ) {
+                startAngle = nextAngle;
+            }
+            nextAngle = startAngle + sliceAngle;
+
             debugger; 
             drawPieslice (
                 this.ctx,
@@ -68,7 +76,7 @@ let PieChart = function( options ) {
                 this.canvas.height / 2,
                 Math.min(this.canvas.width/2, this.canvas.height/2),
                 startAngle,
-                startAngle + sliceAngle,
+                nextAngle,
                 this.colors[color_index]
             );
             color_index++;
